@@ -29,7 +29,7 @@ jobs:
   static-analysis:
     steps:
       - name: Run static analysis
-          run: composer run-script phpstan
+        run: composer run-script phpstan
 
       - name: Run mutation testing
         run: composer run-script infection-ci
