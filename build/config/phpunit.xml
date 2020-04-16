@@ -15,7 +15,7 @@
 
     <testsuites>
         <testsuite name="Unit Tests">
-            <directory>../../tests</directory>
+            <directory>../../tests/LeoVie/C2Spark/Tests/</directory>
         </testsuite>
     </testsuites>
 
