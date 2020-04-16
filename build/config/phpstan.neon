@@ -1,0 +1,6 @@
+parameters:
+    level: 7
+    tmpDir: %currentWorkingDirectory%/build/cache/phpstan
+    paths:
+        - %currentWorkingDirectory%/src
+        - %currentWorkingDirectory%/tests
