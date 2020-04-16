@@ -12,5 +12,21 @@
         "infection/infection": "^0.16.2",
         "phpstan/phpstan": "^0.12.18",
         "phpunit/phpunit": "^9.1"
+    },
+    "scripts": {
+        "phpstan": [
+            "phpstan analyse -c build/config/phpstan.neon"
+        ],
+        "phpunit": [
+            "phpunit -c build/config/phpunit.xml Tests"
+        ],
+        "infection": [
+            "infection --only-covered --configuration=build/config/infection.json --min-msi=80 --min-covered-msi=80 --coverage=build/coverage --threads=4"
+        ],
+        "test": [
+            "@phpstan",
+            "@phpunit",
+            "@infection"
+        ]
     }
 }
