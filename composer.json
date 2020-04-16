@@ -1,6 +1,8 @@
 {
     "name": "leovie/c2spark",
     "type": "project",
+    "description": "A C to Spark transpiler",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Leo Viezens",
