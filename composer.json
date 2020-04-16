@@ -26,7 +26,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LeoVie\\C2Spark\\Test\\": "tests/"
+            "LeoVie\\C2Spark\\Tests\\": "tests/LeoVie/C2Spark/Tests/"
         }
     },
     "scripts": {
@@ -37,12 +37,15 @@
             "phpunit -c build/config/phpunit.xml Tests"
         ],
         "infection": [
-            "infection --only-covered --configuration=build/config/infection.json --min-msi=80 --min-covered-msi=80 --coverage=build/coverage --threads=4"
+            "infection --only-covered --configuration=build/config/infection.json --min-msi=90 --min-covered-msi=90 --coverage=../../build/coverage --threads=4"
+        ],
+        "infection-ci": [
+            "@infection --skip-initial-tests"
         ],
         "test": [
             "@phpstan",
             "@phpunit",
-            "@infection"
+            "@infection-ci"
         ]
     }
 }

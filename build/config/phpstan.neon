@@ -3,4 +3,5 @@ parameters:
     tmpDir: %currentWorkingDirectory%/build/cache/phpstan
     paths:
         - %currentWorkingDirectory%/src
-        - %currentWorkingDirectory%/tests
+        - %currentWorkingDirectory%/tests/LeoVie/C2Spark/Tests/
+    checkMissingIterableValueType: false

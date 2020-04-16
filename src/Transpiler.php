@@ -32,9 +32,9 @@ class Transpiler
     public array $compounds = [];
     public array $compoundsStacks = [];
 
-    public function transpile(?array $data, string $parentNodeType)
+    public function transpile(?array $data, string $parentNodeType): ?array
     {
-        if (empty($data) || $data === null) {
+        if ($data === null || $data === []) {
             return [];
         }
 
@@ -45,7 +45,8 @@ class Transpiler
             case 'BinaryOp':
                 return $this->transpileBinaryOp($data);
             case 'Compound':
-                return $this->transpileCompound($data);
+                $this->transpileCompound($data);
+                break;
             case 'Constant':
                 return $this->transpileConstant($data);
             case 'Decl':
@@ -57,7 +58,8 @@ class Transpiler
             case 'FuncCall':
                 return $this->transpileFuncCall($data);
             case 'FuncDecl':
-                return $this->transpileFuncDecl($data);
+                $this->transpileFuncDecl($data);
+                break;
             case 'FuncDef':
                 return $this->transpileFuncDef($data);
             case 'ID':
@@ -65,12 +67,16 @@ class Transpiler
             case 'IdentifierType':
                 return $this->transpileIdentifierType($data);
             case 'ParamList':
-                return $this->transpileParamList($data);
+                $this->transpileParamList($data);
+                break;
             case 'Return':
-                return $this->transpileReturn($data);
+                $this->transpileReturn($data);
+                break;
             case 'TypeDecl':
                 return $this->transpileTypeDecl($data, $parentNodeType);
         }
+
+        return null;
     }
 
     public function transpileId(array $data): array
@@ -108,7 +114,7 @@ class Transpiler
         ];
     }
 
-    public function transpileCompound(array $data)
+    public function transpileCompound(array $data): void
     {
         $code = '';
         foreach ($data['block_items'] as $blockItem) {
@@ -137,7 +143,7 @@ class Transpiler
     /**
      * @throws Exception
      */
-    public function transpileTypeDecl(array $data, string $parentNodeType)
+    public function transpileTypeDecl(array $data, string $parentNodeType): ?array
     {
         if ($parentNodeType == 'Decl') {
             return [
@@ -146,9 +152,10 @@ class Transpiler
         } else if ($parentNodeType == 'FuncDecl') {
             $varType = $this->transpile($data['type'], $data['_nodetype']);
             $this->outParameter['type'] = $varType['value'];
-        } else {
-            throw new Exception('No transpile method defined for parent node type "' . $parentNodeType . '".');
+            return null;
         }
+
+        throw new Exception('No transpile method defined for parent node type "' . $parentNodeType . '".');
     }
 
     public function transpileFuncDecl(array $data): void
@@ -298,7 +305,7 @@ class Transpiler
     /**
      * @throws Exception
      */
-    public function transpileDecl(array $data, string $parentNodeType)
+    public function transpileDecl(array $data, string $parentNodeType): ?array
     {
         if ($parentNodeType === 'Compound') {
             $name = $data['name'];
@@ -309,15 +316,19 @@ class Transpiler
             return [
                 'value' => $name . ' := ' . $init['value'],
             ];
-        } else if ($parentNodeType === 'ParamList') {
+        }
+        if ($parentNodeType === 'ParamList') {
             $name = $data['name'];
             $paramType = $this->transpile($data['type'], $data['_nodetype']);
             $this->inParameters[$name] = ['name' => $name, 'type' => $paramType['value']];
-        } else if ($parentNodeType === 'FuncDef') {
+            return null;
+        }
+        if ($parentNodeType === 'FuncDef') {
             $this->functionName = ucfirst($data['name']);
             $this->transpile($data['type'], $data['_nodetype']);
-        } else {
-            throw new Exception('No transpilation method defined for parent node type "' . $parentNodeType . '".');
+            return null;
         }
+
+        throw new Exception('No transpilation method defined for parent node type "' . $parentNodeType . '".');
     }
 }

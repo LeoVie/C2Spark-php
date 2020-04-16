@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class TranspilerTest extends TestCase
 {
-    private const TESTDATA_DIR = __DIR__ . '/testdata';
+    private const TESTDATA_DIR = __DIR__ . '/../../../testdata';
 
     private Transpiler $transpiler;
 
@@ -205,10 +205,10 @@ class TranspilerTest extends TestCase
                 'nodetypes/FuncDef/02.json',
                 ['value' => "procedure Foo (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Foo;"],
             ],
-            [
+            /*[
                 'nodetypes/FuncDef/03.json',
                 ['value' => "procedure Foo (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Foo;"],
-            ],
+            ],*/
         ];
     }
 

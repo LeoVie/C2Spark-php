@@ -3,3 +3,4 @@
 /build/coverage/
 /bin/
 /build/cache/*
+/build/logs/*
