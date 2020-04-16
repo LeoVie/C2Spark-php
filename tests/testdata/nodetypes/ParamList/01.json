@@ -1,0 +1,45 @@
+{
+  "_nodetype": "ParamList",
+  "params": [
+    {
+      "_nodetype": "Decl",
+      "bitsize": null,
+      "funcspec": [],
+      "init": null,
+      "name": "x",
+      "quals": [],
+      "storage": [],
+      "type": {
+        "_nodetype": "TypeDecl",
+        "declname": "x",
+        "quals": [],
+        "type": {
+          "_nodetype": "IdentifierType",
+          "names": [
+            "int"
+          ]
+        }
+      }
+    },
+    {
+      "_nodetype": "Decl",
+      "bitsize": null,
+      "funcspec": [],
+      "init": null,
+      "name": "y",
+      "quals": [],
+      "storage": [],
+      "type": {
+        "_nodetype": "TypeDecl",
+        "declname": "y",
+        "quals": [],
+        "type": {
+          "_nodetype": "IdentifierType",
+          "names": [
+            "int"
+          ]
+        }
+      }
+    }
+  ]
+}

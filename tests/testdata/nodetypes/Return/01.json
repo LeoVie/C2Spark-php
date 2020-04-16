@@ -1,0 +1,7 @@
+{
+  "_nodetype": "Return",
+  "expr": {
+    "_nodetype": "ID",
+    "name": "result"
+  }
+}

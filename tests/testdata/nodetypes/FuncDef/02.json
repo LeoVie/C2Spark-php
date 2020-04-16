@@ -1,0 +1,78 @@
+{
+  "_nodetype": "FuncDef",
+  "decl": {
+    "_nodetype": "Decl",
+    "name": "foo",
+    "quals": [],
+    "storage": [],
+    "funcspec": [],
+    "type": {
+      "_nodetype": "FuncDecl",
+      "args": {
+        "_nodetype": "ParamList",
+        "params": [
+          {
+            "_nodetype": "Decl",
+            "name": "number",
+            "quals": [],
+            "storage": [],
+            "funcspec": [],
+            "type": {
+              "_nodetype": "TypeDecl",
+              "declname": "number",
+              "quals": [],
+              "type": {
+                "_nodetype": "IdentifierType",
+                "names": [
+                  "int"
+                ]
+              }
+            },
+            "bitsize": null,
+            "init": null
+          }
+        ]
+      },
+      "type": {
+        "_nodetype": "TypeDecl",
+        "declname": "foo",
+        "quals": [],
+        "type": {
+          "_nodetype": "IdentifierType",
+          "names": [
+            "void"
+          ]
+        }
+      }
+    },
+    "bitsize": null,
+    "init": null
+  },
+  "body": {
+    "_nodetype": "Compound",
+    "block_items": [
+      {
+        "_nodetype": "FuncCall",
+        "name": {
+          "_nodetype": "ID",
+          "name": "printf"
+        },
+        "args": {
+          "_nodetype": "ExprList",
+          "exprs": [
+            {
+              "_nodetype": "Constant",
+              "type": "string",
+              "value": "\"%d\""
+            },
+            {
+              "_nodetype": "ID",
+              "name": "number"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "param_decls": null
+}

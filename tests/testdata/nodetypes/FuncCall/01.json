@@ -1,0 +1,26 @@
+{
+  "_nodetype": "FuncCall",
+  "coord": "testdata/c-files/for-loop.c:4:9",
+  "name": {
+    "_nodetype": "ID",
+    "name": "printf",
+    "coord": "testdata/c-files/for-loop.c:4:9"
+  },
+  "args": {
+    "_nodetype": "ExprList",
+    "coord": "testdata/c-files/for-loop.c:4:16",
+    "exprs": [
+      {
+        "_nodetype": "Constant",
+        "type": "string",
+        "value": "\"%d\"",
+        "coord": "testdata/c-files/for-loop.c:4:16"
+      },
+      {
+        "_nodetype": "ID",
+        "name": "i",
+        "coord": "testdata/c-files/for-loop.c:4:22"
+      }
+    ]
+  }
+}

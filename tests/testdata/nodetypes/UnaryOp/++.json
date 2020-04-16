@@ -1,0 +1,8 @@
+{
+  "_nodetype": "UnaryOp",
+  "op": "p++",
+  "expr": {
+    "_nodetype": "ID",
+    "name": "i"
+  }
+}

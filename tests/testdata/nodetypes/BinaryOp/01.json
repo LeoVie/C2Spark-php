@@ -1,0 +1,13 @@
+{
+  "_nodetype": "BinaryOp",
+  "left": {
+    "_nodetype": "ID",
+    "name": "x"
+  },
+  "op": "/",
+  "right": {
+    "_nodetype": "Constant",
+    "type": "int",
+    "value": "42"
+  }
+}

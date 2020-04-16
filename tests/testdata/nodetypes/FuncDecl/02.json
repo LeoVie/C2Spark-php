@@ -1,0 +1,18 @@
+{
+  "_nodetype": "FuncDecl",
+  "coord": "testdata/c-files/for-loop.c:1:6",
+  "type": {
+    "_nodetype": "TypeDecl",
+    "declname": "foo",
+    "quals": [],
+    "coord": "testdata/c-files/for-loop.c:1:6",
+    "type": {
+      "_nodetype": "IdentifierType",
+      "names": [
+        "void"
+      ],
+      "coord": "testdata/c-files/for-loop.c:1:1"
+    }
+  },
+  "args": null
+}

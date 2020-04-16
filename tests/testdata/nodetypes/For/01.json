@@ -1,0 +1,63 @@
+{
+  "_nodetype": "For",
+  "init": {
+    "_nodetype": "Assignment",
+    "op": "=",
+    "lvalue": {
+      "_nodetype": "ID",
+      "name": "i"
+    },
+    "rvalue": {
+      "_nodetype": "Constant",
+      "type": "int",
+      "value": "0"
+    }
+  },
+  "cond": {
+    "_nodetype": "BinaryOp",
+    "op": "<",
+    "left": {
+      "_nodetype": "ID",
+      "name": "i"
+    },
+    "right": {
+      "_nodetype": "Constant",
+      "type": "int",
+      "value": "50"
+    }
+  },
+  "next": {
+    "_nodetype": "UnaryOp",
+    "op": "p++",
+    "expr": {
+      "_nodetype": "ID",
+      "name": "i"
+    }
+  },
+  "stmt": {
+    "_nodetype": "Compound",
+    "block_items": [
+      {
+        "_nodetype": "FuncCall",
+        "name": {
+          "_nodetype": "ID",
+          "name": "printf"
+        },
+        "args": {
+          "_nodetype": "ExprList",
+          "exprs": [
+            {
+              "_nodetype": "Constant",
+              "type": "string",
+              "value": "\"%d\""
+            },
+            {
+              "_nodetype": "ID",
+              "name": "i"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "_nodetype": "Compound",
+  "block_items": [
+    {
+      "_nodetype": "FuncCall",
+      "name": {
+        "_nodetype": "ID",
+        "name": "printf"
+      },
+      "args": {
+        "_nodetype": "ExprList",
+        "exprs": [
+          {
+            "_nodetype": "Constant",
+            "type": "string",
+            "value": "\"%d\""
+          },
+          {
+            "_nodetype": "ID",
+            "name": "i"
+          }
+        ]
+      }
+    }
+  ]
+}

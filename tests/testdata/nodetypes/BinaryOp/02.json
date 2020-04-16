@@ -1,0 +1,16 @@
+{
+  "_nodetype": "BinaryOp",
+  "op": "<",
+  "coord": "testdata/c-files/for-loop.c:3:17",
+  "left": {
+    "_nodetype": "ID",
+    "name": "i",
+    "coord": "testdata/c-files/for-loop.c:3:17"
+  },
+  "right": {
+    "_nodetype": "Constant",
+    "type": "int",
+    "value": "50",
+    "coord": "testdata/c-files/for-loop.c:3:21"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "_nodetype": "TypeDecl",
+  "declname": "foo",
+  "quals": [],
+  "type": {
+    "_nodetype": "IdentifierType",
+    "names": [
+      "int"
+    ]
+  }
+}

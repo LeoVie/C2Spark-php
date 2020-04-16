@@ -1,0 +1,124 @@
+{
+  "_nodetype": "FuncDef",
+  "body": {
+    "_nodetype": "Compound",
+    "block_items": [
+      {
+        "_nodetype": "Decl",
+        "bitsize": null,
+        "funcspec": [],
+        "init": {
+          "_nodetype": "BinaryOp",
+          "left": {
+            "_nodetype": "BinaryOp",
+            "left": {
+              "_nodetype": "ID",
+              "name": "x"
+            },
+            "op": "/",
+            "right": {
+              "_nodetype": "Constant",
+              "type": "int",
+              "value": "42"
+            }
+          },
+          "op": "*",
+          "right": {
+            "_nodetype": "ID",
+            "name": "y"
+          }
+        },
+        "name": "result",
+        "quals": [],
+        "storage": [],
+        "type": {
+          "_nodetype": "TypeDecl",
+          "declname": "result",
+          "quals": [],
+          "type": {
+            "_nodetype": "IdentifierType",
+            "names": [
+              "int"
+            ]
+          }
+        }
+      },
+      {
+        "_nodetype": "Return",
+        "expr": {
+          "_nodetype": "ID",
+          "name": "result"
+        }
+      }
+    ]
+  },
+  "decl": {
+    "_nodetype": "Decl",
+    "bitsize": null,
+    "funcspec": [],
+    "init": null,
+    "name": "foo",
+    "quals": [],
+    "storage": [],
+    "type": {
+      "_nodetype": "FuncDecl",
+      "args": {
+        "_nodetype": "ParamList",
+        "params": [
+          {
+            "_nodetype": "Decl",
+            "bitsize": null,
+            "funcspec": [],
+            "init": null,
+            "name": "x",
+            "quals": [],
+            "storage": [],
+            "type": {
+              "_nodetype": "TypeDecl",
+              "declname": "x",
+              "quals": [],
+              "type": {
+                "_nodetype": "IdentifierType",
+                "names": [
+                  "int"
+                ]
+              }
+            }
+          },
+          {
+            "_nodetype": "Decl",
+            "bitsize": null,
+            "funcspec": [],
+            "init": null,
+            "name": "y",
+            "quals": [],
+            "storage": [],
+            "type": {
+              "_nodetype": "TypeDecl",
+              "declname": "y",
+              "quals": [],
+              "type": {
+                "_nodetype": "IdentifierType",
+                "names": [
+                  "int"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "type": {
+        "_nodetype": "TypeDecl",
+        "declname": "foo",
+        "quals": [],
+        "type": {
+          "_nodetype": "IdentifierType",
+          "names": [
+            "int"
+          ]
+        }
+      }
+    }
+  },
+  "param_decls": null
+}
