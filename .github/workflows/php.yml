@@ -11,19 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Run static analysis
-      run: composer run-script phpstan
-      
-    - name: Run unit tests
-      run: composer run-script phpunit
-      
-    - name: Run mutation testing
-      run: composer run-script infection-ci
+  unit-tests:
+    - name: unit tests
+      uses: php-actions/phpunit@v1
+      with:
+        config: build/config/phpunit.xml
+        memory: 256M
+
+  static-analysis:
+    steps:
+      - name: Run static analysis
+          run: composer run-script phpstan
+
+      - name: Run mutation testing
+        run: composer run-script infection-ci
