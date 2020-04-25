@@ -6,7 +6,7 @@ use Exception;
 
 class Transpiler
 {
-    private const TYPE_MAPPING = [
+    protected const TYPE_MAPPING = [
         'int' => 'Integer',
         'short' => 'Short_Integer',
         'signed char' => 'Short_Short_Integer',
@@ -22,15 +22,15 @@ class Transpiler
         'string' => 'String',
     ];
 
-    private const OP_MAPPING = [
+    protected const OP_MAPPING = [
         'p++' => '%s := %s + 1',
     ];
 
     public array $inParameters = [];
     public array $outParameter = ['name' => '', 'type' => ''];
+    public array $variables = [];
     public string $functionName = '';
     public array $compounds = [];
-    public array $compoundsStacks = [];
 
     public function transpile(?array $data, string $parentNodeType): ?array
     {
@@ -74,6 +74,22 @@ class Transpiler
                 break;
             case 'TypeDecl':
                 return $this->transpileTypeDecl($data, $parentNodeType);
+                break;
+            case 'FileAST':
+                return $this->transpileFileAST($data);
+                break;
+            case 'While':
+                return $this->transpileWhile($data);
+                break;
+            case 'UnaryOp':
+                return $this->transpileUnaryOp($data);
+                break;
+            case 'DoWhile':
+                return $this->transpileDoWhile($data);
+                break;
+            case 'If':
+                return $this->transpileIf($data);
+                break;
         }
 
         return null;
@@ -166,40 +182,32 @@ class Transpiler
 
     public function transpileFuncDef(array $data): array
     {
-        $this->transpile($data['body'], $data['_nodetype']);
-        $this->transpile($data['decl'], $data['_nodetype']);
-
-        $code = '';
-        $code .= 'procedure ' . $this->functionName . ' (';
-        foreach ($this->inParameters as $key => $inParameter) {
-            $code .= $inParameter['name'] . ' : in ' . $inParameter['type']['value'] . '; ';
-        }
-        if ($this->outParameter['type'] !== 'void') {
-            $code .= $this->outParameter['name'] . ' : out ' . $this->outParameter['type'];
-        }
-        if (\Safe\substr($code, strlen($code) - 2, 2) === '; ') {
-            $code = \Safe\substr($code, 0, strlen($code) - 2);
-        }
-        $code .= ") is\n";
-        $code .= "begin\n";
-        foreach ($this->compounds as $key => $compound) {
-            $code .= '    ' . $compound . ";\n";
-        }
-        $code .= 'end ' . $this->functionName . ';';
-
-        return ['value' => $code];
+        return (new FuncDefTranspiler())->transpile($data, $data['_nodetype']);
     }
 
     public function transpileAssignment(array $data): array
     {
-        $left = $this->transpile($data['lvalue'], $data['_nodetype']);
-        $op = $data['op'];
-        $right = $this->transpile($data['rvalue'], $data['_nodetype']);
+        return (new AssignmentTranspiler())->transpile($data, $data['_nodetype']);
+    }
 
-        return [
-            'value' => $left['value'] . ' ' . $op . ' ' . $right['value'],
-            'type' => $right['type'],
-        ];
+    public function transpileFor(array $data): array
+    {
+        return (new ForTranspiler())->transpile($data, $data['_nodetype']);
+    }
+
+    public function transpileWhile(array $data): array
+    {
+        return (new WhileTranspiler())->transpile($data, $data['_nodetype']);
+    }
+
+    public function transpileDoWhile(array $data): array
+    {
+        return (new DoWhileTranspiler())->transpile($data, $data['_nodetype']);
+    }
+
+    public function transpileIf(array $data): array
+    {
+        return (new IfTranspiler())->transpile($data, $data['_nodetype']);
     }
 
     public function transpileExprList(array $data): array
@@ -262,49 +270,6 @@ class Transpiler
     /**
      * @throws Exception
      */
-    public function transpileFor(array $data): array
-    {
-        $init = $this->transpile($data['init'], $data['_nodetype']);
-
-        $variable = explode(' = ', $init['value'])[0];
-        $initialValue = explode(' = ', $init['value'])[1];
-        $variableType = $init['type'];
-
-        $code = '';
-        $code .= 'for ' . $variable . ' in ' . $variableType;
-
-        $cond = $this->transpile($data['cond'], $data['_nodetype'])['value'];
-        $condVariable = explode(' ', $cond)[0];
-        $condVariable = substr($condVariable, 1, strlen($condVariable) - 1);
-        $condOperator = explode(' ', $cond)[1];
-        $condValue = explode(' ', $cond)[2];
-        $condValue = substr($condValue, 0, strlen($condValue) - 1);
-        if ($condVariable === $variable && $condOperator === '<') {
-            $code .= ' range ' . $initialValue . ' .. ' . $condValue;
-        } else {
-            throw new Exception('No range definition exists for operator "' . $condOperator . '".');
-        }
-
-        $code .= " loop\n";
-
-        // TODO: data['next'] handling
-
-        $this->transpile($data['stmt'], $data['_nodetype']);
-
-        foreach ($this->compounds as $key => $compound) {
-            $code .= $compound . ";\n";
-        }
-
-        $code .= 'end loop;';
-
-        return [
-            'value' => $code,
-        ];
-    }
-
-    /**
-     * @throws Exception
-     */
     public function transpileDecl(array $data, string $parentNodeType): ?array
     {
         if ($parentNodeType === 'Compound') {
@@ -330,5 +295,19 @@ class Transpiler
         }
 
         throw new Exception('No transpilation method defined for parent node type "' . $parentNodeType . '".');
+    }
+
+    public function transpileFileAST(array $data): array
+    {
+        $code = '';
+
+        foreach ($data['ext'] as $ext) {
+            $code .= $this->transpile($ext, $data['_nodetype'])['value'];
+            $code .= "\n\n";
+        }
+
+        return [
+            'value' => $code,
+        ];
     }
 }

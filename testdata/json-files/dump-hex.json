@@ -1,0 +1,239 @@
+{
+  "_nodetype": "FileAST",
+  "coord": null,
+  "ext": [
+    {
+      "_nodetype": "FuncDef",
+      "coord": "testdata/c-files/dump-hex.c:1:6",
+      "decl": {
+        "_nodetype": "Decl",
+        "name": "dump_hex",
+        "quals": [],
+        "storage": [],
+        "funcspec": [],
+        "coord": "testdata/c-files/dump-hex.c:1:6",
+        "type": {
+          "_nodetype": "FuncDecl",
+          "coord": "testdata/c-files/dump-hex.c:1:6",
+          "args": {
+            "_nodetype": "ParamList",
+            "coord": "testdata/c-files/dump-hex.c:1:28",
+            "params": [
+              {
+                "_nodetype": "Decl",
+                "name": "binary",
+                "quals": [],
+                "storage": [],
+                "funcspec": [],
+                "coord": "testdata/c-files/dump-hex.c:1:28",
+                "type": {
+                  "_nodetype": "PtrDecl",
+                  "quals": [],
+                  "coord": "testdata/c-files/dump-hex.c:1:28",
+                  "type": {
+                    "_nodetype": "TypeDecl",
+                    "declname": "binary",
+                    "quals": [],
+                    "coord": "testdata/c-files/dump-hex.c:1:30",
+                    "type": {
+                      "_nodetype": "IdentifierType",
+                      "names": [
+                        "unsigned",
+                        "char"
+                      ],
+                      "coord": "testdata/c-files/dump-hex.c:1:15"
+                    }
+                  }
+                },
+                "bitsize": null,
+                "init": null
+              },
+              {
+                "_nodetype": "Decl",
+                "name": "length",
+                "quals": [],
+                "storage": [],
+                "funcspec": [],
+                "coord": "testdata/c-files/dump-hex.c:1:51",
+                "type": {
+                  "_nodetype": "TypeDecl",
+                  "declname": "length",
+                  "quals": [],
+                  "coord": "testdata/c-files/dump-hex.c:1:51",
+                  "type": {
+                    "_nodetype": "IdentifierType",
+                    "names": [
+                      "unsigned",
+                      "int"
+                    ],
+                    "coord": "testdata/c-files/dump-hex.c:1:38"
+                  }
+                },
+                "bitsize": null,
+                "init": null
+              }
+            ]
+          },
+          "type": {
+            "_nodetype": "TypeDecl",
+            "declname": "dump_hex",
+            "quals": [],
+            "coord": "testdata/c-files/dump-hex.c:1:6",
+            "type": {
+              "_nodetype": "IdentifierType",
+              "names": [
+                "void"
+              ],
+              "coord": "testdata/c-files/dump-hex.c:1:1"
+            }
+          }
+        },
+        "bitsize": null,
+        "init": null
+      },
+      "body": {
+        "_nodetype": "Compound",
+        "coord": "testdata/c-files/dump-hex.c:1:1",
+        "block_items": [
+          {
+            "_nodetype": "Decl",
+            "name": "i",
+            "quals": [],
+            "storage": [],
+            "funcspec": [],
+            "coord": "testdata/c-files/dump-hex.c:2:15",
+            "type": {
+              "_nodetype": "TypeDecl",
+              "declname": "i",
+              "quals": [],
+              "coord": "testdata/c-files/dump-hex.c:2:15",
+              "type": {
+                "_nodetype": "IdentifierType",
+                "names": [
+                  "unsigned",
+                  "int"
+                ],
+                "coord": "testdata/c-files/dump-hex.c:2:2"
+              }
+            },
+            "bitsize": null,
+            "init": null
+          },
+          {
+            "_nodetype": "For",
+            "coord": "testdata/c-files/dump-hex.c:3:2",
+            "init": {
+              "_nodetype": "Assignment",
+              "op": "=",
+              "coord": "testdata/c-files/dump-hex.c:3:7",
+              "lvalue": {
+                "_nodetype": "ID",
+                "name": "i",
+                "coord": "testdata/c-files/dump-hex.c:3:7"
+              },
+              "rvalue": {
+                "_nodetype": "Constant",
+                "type": "int",
+                "value": "0",
+                "coord": "testdata/c-files/dump-hex.c:3:11"
+              }
+            },
+            "cond": {
+              "_nodetype": "BinaryOp",
+              "op": "<",
+              "coord": "testdata/c-files/dump-hex.c:3:14",
+              "left": {
+                "_nodetype": "ID",
+                "name": "i",
+                "coord": "testdata/c-files/dump-hex.c:3:14"
+              },
+              "right": {
+                "_nodetype": "ID",
+                "name": "length",
+                "coord": "testdata/c-files/dump-hex.c:3:18"
+              }
+            },
+            "next": {
+              "_nodetype": "UnaryOp",
+              "op": "p++",
+              "coord": "testdata/c-files/dump-hex.c:3:26",
+              "expr": {
+                "_nodetype": "ID",
+                "name": "i",
+                "coord": "testdata/c-files/dump-hex.c:3:26"
+              }
+            },
+            "stmt": {
+              "_nodetype": "Compound",
+              "coord": "testdata/c-files/dump-hex.c:3:1",
+              "block_items": [
+                {
+                  "_nodetype": "FuncCall",
+                  "coord": "testdata/c-files/dump-hex.c:4:3",
+                  "name": {
+                    "_nodetype": "ID",
+                    "name": "printf",
+                    "coord": "testdata/c-files/dump-hex.c:4:3"
+                  },
+                  "args": {
+                    "_nodetype": "ExprList",
+                    "coord": "testdata/c-files/dump-hex.c:4:10",
+                    "exprs": [
+                      {
+                        "_nodetype": "Constant",
+                        "type": "string",
+                        "value": "\"%02x \"",
+                        "coord": "testdata/c-files/dump-hex.c:4:10"
+                      },
+                      {
+                        "_nodetype": "ArrayRef",
+                        "coord": "testdata/c-files/dump-hex.c:4:19",
+                        "name": {
+                          "_nodetype": "ID",
+                          "name": "binary",
+                          "coord": "testdata/c-files/dump-hex.c:4:19"
+                        },
+                        "subscript": {
+                          "_nodetype": "ID",
+                          "name": "i",
+                          "coord": "testdata/c-files/dump-hex.c:4:26"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "_nodetype": "FuncCall",
+            "coord": "testdata/c-files/dump-hex.c:6:2",
+            "name": {
+              "_nodetype": "ID",
+              "name": "printf",
+              "coord": "testdata/c-files/dump-hex.c:6:2"
+            },
+            "args": {
+              "_nodetype": "ExprList",
+              "coord": "testdata/c-files/dump-hex.c:6:9",
+              "exprs": [
+                {
+                  "_nodetype": "Constant",
+                  "type": "string",
+                  "value": "\"Total: %i\\n\"",
+                  "coord": "testdata/c-files/dump-hex.c:6:9"
+                },
+                {
+                  "_nodetype": "ID",
+                  "name": "i",
+                  "coord": "testdata/c-files/dump-hex.c:6:24"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "param_decls": null
+    }
+  ]
+}

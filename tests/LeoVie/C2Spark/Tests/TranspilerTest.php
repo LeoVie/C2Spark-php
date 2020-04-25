@@ -188,6 +188,10 @@ class TranspilerTest extends TestCase
     /** @dataProvider funcDefProvider */
     public function testTranspileFuncDef(string $fixturePath, array $expected): void
     {
+        if ($fixturePath === 'nodetypes/FuncDef/03.json') {
+            $this->markTestSkipped();
+        }
+
         $data = $this->loadJsonData($fixturePath);
         $actual = $this->transpiler->transpileFuncDef($data);
 
@@ -205,10 +209,10 @@ class TranspilerTest extends TestCase
                 'nodetypes/FuncDef/02.json',
                 ['value' => "procedure Foo (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Foo;"],
             ],
-            /*[
+            [
                 'nodetypes/FuncDef/03.json',
-                ['value' => "procedure Foo (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Foo;"],
-            ],*/
+                ['value' => "procedure Foo () is\nbegin\n    for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop;\nend Foo;"],
+            ],
         ];
     }
 
@@ -256,11 +260,11 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/IdentifierType/01.json',
-                ['value' => 'Integer']
+                ['value' => 'Integer'],
             ],
             [
                 'nodetypes/IdentifierType/02.json',
-                ['value' => 'C.unsigned']
+                ['value' => 'C.unsigned'],
             ],
         ];
     }
@@ -279,10 +283,77 @@ class TranspilerTest extends TestCase
     {
         $data = $this->loadJsonData('nodetypes/For/01.json');
 
-        $expected = ['value' => "for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop;"];
+        $expected = ['value' => "for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop"];
         $actual = $this->transpiler->transpileFor($data);
 
         self::assertEquals($expected, $actual);
+    }
+
+    /** @dataProvider fileASTProvider */
+    public function testTranspileFileAST(string $fixturePath, array $expected): void
+    {
+        $data = $this->loadJsonData($fixturePath);
+
+        $actual = $this->transpiler->transpileFileAST($data);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    public function fileASTProvider(): array
+    {
+        return [
+            [
+                'nodetypes/FileAST/01.json',
+                ['value' => "procedure Foo (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend Foo;\n\n"],
+            ],
+            [
+                'nodetypes/FileAST/02.json',
+                ['value' =>
+                    "procedure First (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend First;\n\n"
+                    . "procedure Second (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Second;\n\n"
+                ],
+            ],
+        ];
+    }
+
+    public function testTranspileWhile(): void
+    {
+        $data = $this->loadJsonData('nodetypes/While/01.json');
+
+        $expected = ['value' => "while (i < 50) loop\ni := i + 1;\nend loop"];
+        $actual = $this->transpiler->transpileWhile($data);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    public function testTranspileDoWhile(): void
+    {
+        $data = $this->loadJsonData('nodetypes/DoWhile/01.json');
+
+        $expected = ['value' => "loop\ni := i + 1;\nexit when not (i < 50);\nend loop"];
+        $actual = $this->transpiler->transpileDoWhile($data);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /** @dataProvider ifProvider */
+    public function testTranspileIf(string $fixturePath, array $expected): void
+    {
+        $data = $this->loadJsonData($fixturePath);
+
+        $actual = $this->transpiler->transpileIf($data);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    public function ifProvider(): array
+    {
+        return [
+            [
+                'nodetypes/If/01.json',
+                ['value' => "if (number <= 50) then\n"],
+            ],
+        ];
     }
 
     private function loadJsonData(string $path): array

@@ -1,0 +1,147 @@
+{
+  "_nodetype": "FileAST",
+  "coord": null,
+  "ext": [
+    {
+      "_nodetype": "FuncDef",
+      "coord": "testdata/c-files/for-loop.c:1:6",
+      "decl": {
+        "_nodetype": "Decl",
+        "name": "foo",
+        "quals": [],
+        "storage": [],
+        "funcspec": [],
+        "coord": "testdata/c-files/for-loop.c:1:6",
+        "type": {
+          "_nodetype": "FuncDecl",
+          "coord": "testdata/c-files/for-loop.c:1:6",
+          "type": {
+            "_nodetype": "TypeDecl",
+            "declname": "foo",
+            "quals": [],
+            "coord": "testdata/c-files/for-loop.c:1:6",
+            "type": {
+              "_nodetype": "IdentifierType",
+              "names": [
+                "void"
+              ],
+              "coord": "testdata/c-files/for-loop.c:1:1"
+            }
+          },
+          "args": null
+        },
+        "init": null,
+        "bitsize": null
+      },
+      "body": {
+        "_nodetype": "Compound",
+        "coord": "testdata/c-files/for-loop.c:1:1",
+        "block_items": [
+          {
+            "_nodetype": "Decl",
+            "name": "i",
+            "quals": [],
+            "storage": [],
+            "funcspec": [],
+            "coord": "testdata/c-files/for-loop.c:2:18",
+            "type": {
+              "_nodetype": "TypeDecl",
+              "declname": "i",
+              "quals": [],
+              "coord": "testdata/c-files/for-loop.c:2:18",
+              "type": {
+                "_nodetype": "IdentifierType",
+                "names": [
+                  "unsigned",
+                  "int"
+                ],
+                "coord": "testdata/c-files/for-loop.c:2:5"
+              }
+            },
+            "init": null,
+            "bitsize": null
+          },
+          {
+            "_nodetype": "For",
+            "coord": "testdata/c-files/for-loop.c:3:5",
+            "init": {
+              "_nodetype": "Assignment",
+              "op": "=",
+              "coord": "testdata/c-files/for-loop.c:3:10",
+              "lvalue": {
+                "_nodetype": "ID",
+                "name": "i",
+                "coord": "testdata/c-files/for-loop.c:3:10"
+              },
+              "rvalue": {
+                "_nodetype": "Constant",
+                "type": "int",
+                "value": "0",
+                "coord": "testdata/c-files/for-loop.c:3:14"
+              }
+            },
+            "cond": {
+              "_nodetype": "BinaryOp",
+              "op": "<",
+              "coord": "testdata/c-files/for-loop.c:3:17",
+              "left": {
+                "_nodetype": "ID",
+                "name": "i",
+                "coord": "testdata/c-files/for-loop.c:3:17"
+              },
+              "right": {
+                "_nodetype": "Constant",
+                "type": "int",
+                "value": "50",
+                "coord": "testdata/c-files/for-loop.c:3:21"
+              }
+            },
+            "next": {
+              "_nodetype": "UnaryOp",
+              "op": "p++",
+              "coord": "testdata/c-files/for-loop.c:3:25",
+              "expr": {
+                "_nodetype": "ID",
+                "name": "i",
+                "coord": "testdata/c-files/for-loop.c:3:25"
+              }
+            },
+            "stmt": {
+              "_nodetype": "Compound",
+              "coord": "testdata/c-files/for-loop.c:3:1",
+              "block_items": [
+                {
+                  "_nodetype": "FuncCall",
+                  "coord": "testdata/c-files/for-loop.c:4:9",
+                  "name": {
+                    "_nodetype": "ID",
+                    "name": "printf",
+                    "coord": "testdata/c-files/for-loop.c:4:9"
+                  },
+                  "args": {
+                    "_nodetype": "ExprList",
+                    "coord": "testdata/c-files/for-loop.c:4:16",
+                    "exprs": [
+                      {
+                        "_nodetype": "Constant",
+                        "type": "string",
+                        "value": "\"%d\"",
+                        "coord": "testdata/c-files/for-loop.c:4:16"
+                      },
+                      {
+                        "_nodetype": "ID",
+                        "name": "i",
+                        "coord": "testdata/c-files/for-loop.c:4:22"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "param_decls": null
+    }
+  ]
+}

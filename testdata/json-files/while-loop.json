@@ -1,0 +1,88 @@
+{
+  "_nodetype": "FileAST",
+  "ext": [
+    {
+      "_nodetype": "FuncDef",
+      "decl": {
+        "_nodetype": "Decl",
+        "name": "foo",
+        "quals": [],
+        "storage": [],
+        "funcspec": [],
+        "type": {
+          "_nodetype": "FuncDecl",
+          "type": {
+            "_nodetype": "TypeDecl",
+            "declname": "foo",
+            "quals": [],
+            "type": {
+              "_nodetype": "IdentifierType",
+              "names": [
+                "void"
+              ]
+            }
+          },
+          "args": null
+        },
+        "bitsize": null,
+        "init": null
+      },
+      "body": {
+        "_nodetype": "Compound",
+        "block_items": [
+          {
+            "_nodetype": "Decl",
+            "name": "i",
+            "quals": [],
+            "storage": [],
+            "funcspec": [],
+            "type": {
+              "_nodetype": "TypeDecl",
+              "declname": "i",
+              "quals": [],
+              "type": {
+                "_nodetype": "IdentifierType",
+                "names": [
+                  "unsigned",
+                  "int"
+                ]
+              }
+            },
+            "bitsize": null,
+            "init": null
+          },
+          {
+            "_nodetype": "While",
+            "cond": {
+              "_nodetype": "BinaryOp",
+              "op": "<",
+              "left": {
+                "_nodetype": "ID",
+                "name": "i"
+              },
+              "right": {
+                "_nodetype": "Constant",
+                "type": "int",
+                "value": "50"
+              }
+            },
+            "stmt": {
+              "_nodetype": "Compound",
+              "block_items": [
+                {
+                  "_nodetype": "UnaryOp",
+                  "op": "p++",
+                  "expr": {
+                    "_nodetype": "ID",
+                    "name": "i"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "param_decls": null
+    }
+  ]
+}

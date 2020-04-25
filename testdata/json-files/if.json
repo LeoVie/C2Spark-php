@@ -1,0 +1,133 @@
+{
+  "_nodetype": "FileAST",
+  "ext": [
+    {
+      "_nodetype": "FuncDef",
+      "decl": {
+        "_nodetype": "Decl",
+        "name": "foo",
+        "quals": [],
+        "storage": [],
+        "funcspec": [],
+        "type": {
+          "_nodetype": "FuncDecl",
+          "args": {
+            "_nodetype": "ParamList",
+            "params": [
+              {
+                "_nodetype": "Decl",
+                "name": "number",
+                "quals": [],
+                "storage": [],
+                "funcspec": [],
+                "type": {
+                  "_nodetype": "TypeDecl",
+                  "declname": "number",
+                  "quals": [],
+                  "type": {
+                    "_nodetype": "IdentifierType",
+                    "names": [
+                      "int"
+                    ]
+                  }
+                },
+                "init": null,
+                "bitsize": null
+              }
+            ]
+          },
+          "type": {
+            "_nodetype": "TypeDecl",
+            "declname": "foo",
+            "quals": [],
+            "type": {
+              "_nodetype": "IdentifierType",
+              "names": [
+                "int"
+              ]
+            }
+          }
+        },
+        "init": null,
+        "bitsize": null
+      },
+      "body": {
+        "_nodetype": "Compound",
+        "block_items": [
+          {
+            "_nodetype": "If",
+            "cond": {
+              "_nodetype": "BinaryOp",
+              "op": "<=",
+              "left": {
+                "_nodetype": "ID",
+                "name": "number"
+              },
+              "right": {
+                "_nodetype": "Constant",
+                "type": "int",
+                "value": "10"
+              }
+            },
+            "iftrue": {
+              "_nodetype": "Compound",
+              "block_items": [
+                {
+                  "_nodetype": "Return",
+                  "expr": {
+                    "_nodetype": "Constant",
+                    "type": "int",
+                    "value": "10"
+                  }
+                }
+              ]
+            },
+            "iffalse": {
+              "_nodetype": "If",
+              "cond": {
+                "_nodetype": "BinaryOp",
+                "op": "<=",
+                "left": {
+                  "_nodetype": "ID",
+                  "name": "number"
+                },
+                "right": {
+                  "_nodetype": "Constant",
+                  "type": "int",
+                  "value": "50"
+                }
+              },
+              "iftrue": {
+                "_nodetype": "Compound",
+                "block_items": [
+                  {
+                    "_nodetype": "Return",
+                    "expr": {
+                      "_nodetype": "Constant",
+                      "type": "int",
+                      "value": "50"
+                    }
+                  }
+                ]
+              },
+              "iffalse": {
+                "_nodetype": "Compound",
+                "block_items": [
+                  {
+                    "_nodetype": "Return",
+                    "expr": {
+                      "_nodetype": "Constant",
+                      "type": "int",
+                      "value": "0"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "param_decls": null
+    }
+  ]
+}
