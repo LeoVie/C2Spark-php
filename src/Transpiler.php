@@ -32,7 +32,7 @@ class Transpiler
     public string $functionName = '';
     public array $compounds = [];
 
-    public function transpile(?array $data, string $parentNodeType): ?array
+    public function transpile(?array $data, string $parentNodeType): array
     {
         if ($data === null || $data === []) {
             return [];
@@ -70,7 +70,7 @@ class Transpiler
                 $this->transpileParamList($data);
                 break;
             case 'Return':
-                $this->transpileReturn($data);
+                return $this->transpileReturn($data);
                 break;
             case 'TypeDecl':
                 return $this->transpileTypeDecl($data, $parentNodeType);
@@ -92,7 +92,7 @@ class Transpiler
                 break;
         }
 
-        return null;
+        return [];
     }
 
     public function transpileId(array $data): array
@@ -132,21 +132,20 @@ class Transpiler
 
     public function transpileCompound(array $data): void
     {
-        $code = '';
         foreach ($data['block_items'] as $blockItem) {
             $transpiled = $this->transpile($blockItem, $data['_nodetype']);
             if (!empty($transpiled)) {
-                $code .= $transpiled['value'];
+                $this->compounds[] = $transpiled['value'];
             }
         }
-
-        $this->compounds[] = $code;
     }
 
-    public function transpileReturn(array $data): void
+    public function transpileReturn(array $data): array
     {
         $expr = $this->transpile($data['expr'], $data['_nodetype']);
-        $this->outParameter['name'] = $expr['value'];
+        return [
+            'value' => 'return ' . $expr['value'],
+        ];
     }
 
     public function transpileParamList(array $data): void
@@ -157,18 +156,22 @@ class Transpiler
     }
 
     /**
+     * @return array<string, string>
+     *
      * @throws Exception
      */
-    public function transpileTypeDecl(array $data, string $parentNodeType): ?array
+    public function transpileTypeDecl(array $data, string $parentNodeType): array
     {
-        if ($parentNodeType == 'Decl') {
+        if ($parentNodeType === 'Decl') {
             return [
                 'value' => $this->transpile($data['type'], $data['_nodetype']),
             ];
         } else if ($parentNodeType == 'FuncDecl') {
             $varType = $this->transpile($data['type'], $data['_nodetype']);
             $this->outParameter['type'] = $varType['value'];
-            return null;
+            return [
+                'value' => $this->transpile($data['type'], $data['_nodetype']),
+            ];
         }
 
         throw new Exception('No transpile method defined for parent node type "' . $parentNodeType . '".');
@@ -176,8 +179,7 @@ class Transpiler
 
     public function transpileFuncDecl(array $data): void
     {
-        $this->transpile($data['args'], $data['_nodetype']);
-        $this->transpile($data['type'], $data['_nodetype']);
+        (new FuncDefTranspiler())->transpile($data, $data['_nodetype']);
     }
 
     public function transpileFuncDef(array $data): array
@@ -270,7 +272,7 @@ class Transpiler
     /**
      * @throws Exception
      */
-    public function transpileDecl(array $data, string $parentNodeType): ?array
+    public function transpileDecl(array $data, string $parentNodeType): array
     {
         if ($parentNodeType === 'Compound') {
             $name = $data['name'];
@@ -285,13 +287,14 @@ class Transpiler
         if ($parentNodeType === 'ParamList') {
             $name = $data['name'];
             $paramType = $this->transpile($data['type'], $data['_nodetype']);
+
             $this->inParameters[$name] = ['name' => $name, 'type' => $paramType['value']];
-            return null;
+            return [];
         }
         if ($parentNodeType === 'FuncDef') {
             $this->functionName = ucfirst($data['name']);
             $this->transpile($data['type'], $data['_nodetype']);
-            return null;
+            return [];
         }
 
         throw new Exception('No transpilation method defined for parent node type "' . $parentNodeType . '".');

@@ -2,6 +2,7 @@
 
 namespace LeoVie\C2Spark\Tests;
 
+use LeoVie\C2Spark\FuncDefTranspiler;
 use LeoVie\C2Spark\Transpiler;
 use PHPUnit\Framework\TestCase;
 
@@ -85,9 +86,9 @@ class TranspilerTest extends TestCase
     public function testTranspileReturn(): void
     {
         $data = $this->loadJsonData('nodetypes/Return/01.json');
-        $this->transpiler->transpileReturn($data);
+        $actual = $this->transpiler->transpileReturn($data);
 
-        self::assertEquals('result', $this->transpiler->outParameter['name']);
+        self::assertEquals(['value' => 'return result'], $actual);
     }
 
     public function testTranspileParamList(): void
@@ -146,13 +147,13 @@ class TranspilerTest extends TestCase
     }
 
     /** @dataProvider funcDeclProvider */
-    public function testTranspileFuncDecl(
-        string $fixturePath, array $expectedOutParameter, array $expectedInParameters): void
+    public function testTranspileFuncDecl(string $fixturePath, array $expectedInParameters): void
     {
         $data = $this->loadJsonData($fixturePath);
+
+        $this->transpiler = new FuncDefTranspiler();
         $this->transpiler->transpileFuncDecl($data);
 
-        self::assertEquals($expectedOutParameter, $this->transpiler->outParameter);
         self::assertEquals($expectedInParameters, $this->transpiler->inParameters);
     }
 
@@ -161,7 +162,6 @@ class TranspilerTest extends TestCase
         return [
             [
                 'fixturePath' => 'nodetypes/FuncDecl/01.json',
-                'expectedOutParameter' => ['type' => 'Integer', 'name' => ''],
                 'expectedInParameters' => [
                     'x' => [
                         'name' => 'x',
@@ -179,7 +179,6 @@ class TranspilerTest extends TestCase
             ],
             [
                 'fixturePath' => 'nodetypes/FuncDecl/02.json',
-                'expectedOutParameter' => ['type' => 'void', 'name' => ''],
                 'expectedInParameters' => [],
             ],
         ];
@@ -203,7 +202,7 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/FuncDef/01.json',
-                ['value' => "procedure Foo (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend Foo;"],
+                ['value' => "procedure Foo (x : in Integer; y : in Integer) is\nbegin\n    result := ((x / 42) * y);\n    return result;\nend Foo;"],
             ],
             [
                 'nodetypes/FuncDef/02.json',
@@ -304,13 +303,13 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/FileAST/01.json',
-                ['value' => "procedure Foo (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend Foo;\n\n"],
+                ['value' => "procedure Foo (x : in Integer; y : in Integer) is\nbegin\n    result := ((x / 42) * y);\n    return result;\nend Foo;\n\n"],
             ],
             [
                 'nodetypes/FileAST/02.json',
                 ['value' =>
-                    "procedure First (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend First;\n\n"
-                    . "procedure Second (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Second;\n\n"
+                    "procedure First (x : in Integer; y : in Integer) is\nbegin\n    result := ((x / 42) * y);\n    return result;\nend First;\n\n"
+                    . "procedure Second (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Second;\n\n",
                 ],
             ],
         ];
