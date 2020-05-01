@@ -202,15 +202,15 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/FuncDef/01.json',
-                ['value' => "procedure Foo (x : in Integer; y : in Integer) is\nbegin\n    result := ((x / 42) * y);\n    return result;\nend Foo;"],
+                ['value' => "function Foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend Foo;"],
             ],
             [
                 'nodetypes/FuncDef/02.json',
-                ['value' => "procedure Foo (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Foo;"],
+                ['value' => "procedure Foo (number : in Integer)\nis\nbegin\n    printf(\"%d\", number);\nend Foo;"],
             ],
             [
                 'nodetypes/FuncDef/03.json',
-                ['value' => "procedure Foo () is\nbegin\n    for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop;\nend Foo;"],
+                ['value' => "procedure Foo ()\nis\nbegin\n    for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop;\nend Foo;"],
             ],
         ];
     }
@@ -303,13 +303,13 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/FileAST/01.json',
-                ['value' => "procedure Foo (x : in Integer; y : in Integer) is\nbegin\n    result := ((x / 42) * y);\n    return result;\nend Foo;\n\n"],
+                ['value' => "function Foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend Foo;\n\n"],
             ],
             [
                 'nodetypes/FileAST/02.json',
                 ['value' =>
-                    "procedure First (x : in Integer; y : in Integer) is\nbegin\n    result := ((x / 42) * y);\n    return result;\nend First;\n\n"
-                    . "procedure Second (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Second;\n\n",
+                    "function First (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend First;\n\n"
+                    . "procedure Second (number : in Integer)\nis\nbegin\n    printf(\"%d\", number);\nend Second;\n\n",
                 ],
             ],
         ];
