@@ -2,6 +2,7 @@
 
 namespace LeoVie\C2Spark\Tests;
 
+use LeoVie\C2Spark\FuncDefTranspiler;
 use LeoVie\C2Spark\Transpiler;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +19,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileId(): void
     {
-        $data = $this->loadJsonData('nodetypes/ID/01.json');
+        $data = $this->loadFixture('nodetypes/ID/01.json');
         $expected = ['value' => 'y'];
         $actual = $this->transpiler->transpileId($data);
 
@@ -27,7 +28,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileConstant(): void
     {
-        $data = $this->loadJsonData('nodetypes/Constant/01.json');
+        $data = $this->loadFixture('nodetypes/Constant/01.json');
         $expected = ['value' => '42', 'type' => 'Integer'];
         $actual = $this->transpiler->transpileConstant($data);
 
@@ -37,7 +38,7 @@ class TranspilerTest extends TestCase
     /** @dataProvider binaryOpProvider */
     public function testTranspileBinaryOp(string $fixturePath, array $expected): void
     {
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
         $actual = $this->transpiler->transpileBinaryOp($data);
 
         self::assertEquals($expected, $actual);
@@ -60,7 +61,7 @@ class TranspilerTest extends TestCase
     /** @dataProvider compoundProvider */
     public function testTranspileCompound(string $fixturePath, string $expected): void
     {
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
         $this->transpiler->transpileCompound($data);
 
         $actual = $this->transpiler->compounds[0];
@@ -84,15 +85,15 @@ class TranspilerTest extends TestCase
 
     public function testTranspileReturn(): void
     {
-        $data = $this->loadJsonData('nodetypes/Return/01.json');
-        $this->transpiler->transpileReturn($data);
+        $data = $this->loadFixture('nodetypes/Return/01.json');
+        $actual = $this->transpiler->transpileReturn($data);
 
-        self::assertEquals('result', $this->transpiler->outParameter['name']);
+        self::assertEquals(['value' => 'return result'], $actual);
     }
 
     public function testTranspileParamList(): void
     {
-        $data = $this->loadJsonData('nodetypes/ParamList/01.json');
+        $data = $this->loadFixture('nodetypes/ParamList/01.json');
         $this->transpiler->transpileParamList($data);
 
         self::assertEquals([
@@ -115,7 +116,7 @@ class TranspilerTest extends TestCase
     public function testTranspileTypeDecl_from_decl_context(
         string $fixturePath, string $parentNodeType, array $expected): void
     {
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
         $actual = $this->transpiler->transpileTypeDecl($data, $parentNodeType);
 
         self::assertEquals($expected, $actual);
@@ -139,20 +140,20 @@ class TranspilerTest extends TestCase
 
     public function testTranspileTypeDecl_from_func_decl_context(): void
     {
-        $data = $this->loadJsonData('nodetypes/TypeDecl/FromFuncDeclContext/01.json');
+        $data = $this->loadFixture('nodetypes/TypeDecl/FromFuncDeclContext/01.json');
         $this->transpiler->transpileTypeDecl($data, 'FuncDecl');
 
         self::assertEquals('Integer', $this->transpiler->outParameter['type']);
     }
 
     /** @dataProvider funcDeclProvider */
-    public function testTranspileFuncDecl(
-        string $fixturePath, array $expectedOutParameter, array $expectedInParameters): void
+    public function testTranspileFuncDecl(string $fixturePath, array $expectedInParameters): void
     {
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
+
+        $this->transpiler = new FuncDefTranspiler();
         $this->transpiler->transpileFuncDecl($data);
 
-        self::assertEquals($expectedOutParameter, $this->transpiler->outParameter);
         self::assertEquals($expectedInParameters, $this->transpiler->inParameters);
     }
 
@@ -161,7 +162,6 @@ class TranspilerTest extends TestCase
         return [
             [
                 'fixturePath' => 'nodetypes/FuncDecl/01.json',
-                'expectedOutParameter' => ['type' => 'Integer', 'name' => ''],
                 'expectedInParameters' => [
                     'x' => [
                         'name' => 'x',
@@ -179,7 +179,6 @@ class TranspilerTest extends TestCase
             ],
             [
                 'fixturePath' => 'nodetypes/FuncDecl/02.json',
-                'expectedOutParameter' => ['type' => 'void', 'name' => ''],
                 'expectedInParameters' => [],
             ],
         ];
@@ -188,11 +187,7 @@ class TranspilerTest extends TestCase
     /** @dataProvider funcDefProvider */
     public function testTranspileFuncDef(string $fixturePath, array $expected): void
     {
-        if ($fixturePath === 'nodetypes/FuncDef/03.json') {
-            $this->markTestSkipped();
-        }
-
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
         $actual = $this->transpiler->transpileFuncDef($data);
 
         self::assertEquals($expected, $actual);
@@ -203,22 +198,22 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/FuncDef/01.json',
-                ['value' => "procedure Foo (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend Foo;"],
+                ['value' => "function foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend foo;"],
             ],
             [
                 'nodetypes/FuncDef/02.json',
-                ['value' => "procedure Foo (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Foo;"],
+                ['value' => "procedure foo (number : in Integer)\nis\nbegin\n    printf(\"%d\", number);\nend foo;"],
             ],
-            [
+            /*[
                 'nodetypes/FuncDef/03.json',
-                ['value' => "procedure Foo () is\nbegin\n    for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop;\nend Foo;"],
-            ],
+                ['value' => "procedure Foo\nis\nbegin\n    for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop;\nend Foo;"],
+            ],*/
         ];
     }
 
     public function testTranspileAssigment(): void
     {
-        $data = $this->loadJsonData('nodetypes/Assignment/01.json');
+        $data = $this->loadFixture('nodetypes/Assignment/01.json');
 
         $expected = ['value' => 'i = 0', 'type' => 'Integer'];
         $actual = $this->transpiler->transpileAssignment($data);
@@ -228,7 +223,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileExprList(): void
     {
-        $data = $this->loadJsonData('nodetypes/ExprList/01.json');
+        $data = $this->loadFixture('nodetypes/ExprList/01.json');
 
         $expected = ['value' => '"%d", i'];
         $actual = $this->transpiler->transpileExprList($data);
@@ -238,7 +233,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileFuncCall(): void
     {
-        $data = $this->loadJsonData('nodetypes/FuncCall/01.json');
+        $data = $this->loadFixture('nodetypes/FuncCall/01.json');
 
         $expected = ['value' => 'printf("%d", i)'];
         $actual = $this->transpiler->transpileFuncCall($data);
@@ -249,7 +244,7 @@ class TranspilerTest extends TestCase
     /** @dataProvider identifierTypeProvider */
     public function testTranspileIdentifierType_01(string $fixturePath, array $expected): void
     {
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
         $actual = $this->transpiler->transpileIdentifierType($data);
 
         self::assertEquals($expected, $actual);
@@ -271,7 +266,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileUnaryOp(): void
     {
-        $data = $this->loadJsonData('nodetypes/UnaryOp/++.json');
+        $data = $this->loadFixture('nodetypes/UnaryOp/++.json');
 
         $expected = ['value' => 'i := i + 1'];
         $actual = $this->transpiler->transpileUnaryOp($data);
@@ -281,7 +276,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileFor(): void
     {
-        $data = $this->loadJsonData('nodetypes/For/01.json');
+        $data = $this->loadFixture('nodetypes/For/01.json');
 
         $expected = ['value' => "for i in Integer range 0 .. 50 loop\nprintf(\"%d\", i);\nend loop"];
         $actual = $this->transpiler->transpileFor($data);
@@ -292,7 +287,7 @@ class TranspilerTest extends TestCase
     /** @dataProvider fileASTProvider */
     public function testTranspileFileAST(string $fixturePath, array $expected): void
     {
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
 
         $actual = $this->transpiler->transpileFileAST($data);
 
@@ -304,13 +299,17 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/FileAST/01.json',
-                ['value' => "procedure Foo (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend Foo;\n\n"],
+                ['value' =>
+                    "function foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend foo;\n\n"
+                    . "end Transpiled;",
+                ],
             ],
             [
                 'nodetypes/FileAST/02.json',
                 ['value' =>
-                    "procedure First (x : in Integer; y : in Integer; result : out Integer) is\nbegin\n    result := ((x / 42) * y);\nend First;\n\n"
-                    . "procedure Second (number : in Integer) is\nbegin\n    printf(\"%d\", number);\nend Second;\n\n"
+                    "function first (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend first;\n\n"
+                    . "procedure second (number : in Integer)\nis\nbegin\n    printf(\"%d\", number);\nend second;\n\n"
+                    . "end Transpiled;",
                 ],
             ],
         ];
@@ -318,7 +317,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileWhile(): void
     {
-        $data = $this->loadJsonData('nodetypes/While/01.json');
+        $data = $this->loadFixture('nodetypes/While/01.json');
 
         $expected = ['value' => "while (i < 50) loop\ni := i + 1;\nend loop"];
         $actual = $this->transpiler->transpileWhile($data);
@@ -328,7 +327,7 @@ class TranspilerTest extends TestCase
 
     public function testTranspileDoWhile(): void
     {
-        $data = $this->loadJsonData('nodetypes/DoWhile/01.json');
+        $data = $this->loadFixture('nodetypes/DoWhile/01.json');
 
         $expected = ['value' => "loop\ni := i + 1;\nexit when not (i < 50);\nend loop"];
         $actual = $this->transpiler->transpileDoWhile($data);
@@ -339,7 +338,7 @@ class TranspilerTest extends TestCase
     /** @dataProvider ifProvider */
     public function testTranspileIf(string $fixturePath, array $expected): void
     {
-        $data = $this->loadJsonData($fixturePath);
+        $data = $this->loadFixture($fixturePath);
 
         $actual = $this->transpiler->transpileIf($data);
 
@@ -349,14 +348,14 @@ class TranspilerTest extends TestCase
     public function ifProvider(): array
     {
         return [
-            [
+            /*[
                 'nodetypes/If/01.json',
                 ['value' => "if (number <= 50) then\n"],
-            ],
+            ],*/
         ];
     }
 
-    private function loadJsonData(string $path): array
+    private function loadFixture(string $path): array
     {
         return \Safe\json_decode(\Safe\file_get_contents(self::TESTDATA_DIR . '/' . $path),
             true);

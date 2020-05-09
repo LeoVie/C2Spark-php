@@ -14,7 +14,8 @@
         "optimize-autoloader": true
     },
     "require": {
-        "thecodingmachine/safe": "^1.1"
+        "thecodingmachine/safe": "^1.1",
+        "leovie/gnat-wrapper": "dev-master"
     },
     "require-dev": {
         "infection/infection": "^0.16.2",

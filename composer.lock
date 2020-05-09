@@ -4,8 +4,41 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c33006e7ff65f722ba9518541bb19298",
+    "content-hash": "bb36af193186ccf52c17b0f4d39ccf13",
     "packages": [
+        {
+            "name": "leovie/gnat-wrapper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LeoVie/gnat-wrapper.git",
+                "reference": "2832154ea223a72a01c520fe0afbdc72a0a8e0ce"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LeoVie/gnat-wrapper/zipball/2832154ea223a72a01c520fe0afbdc72a0a8e0ce",
+                "reference": "2832154ea223a72a01c520fe0afbdc72a0a8e0ce",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LeoVie\\GNATWrapper\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Leo Viezens",
+                    "email": "leo.viezens@web.de"
+                }
+            ],
+            "description": "A php wrapper for GNAT",
+            "time": "2020-05-09T21:28:28+00:00"
+        },
         {
             "name": "thecodingmachine/safe",
             "version": "v1.1",
@@ -3029,7 +3062,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "leovie/gnat-wrapper": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

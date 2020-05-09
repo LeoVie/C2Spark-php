@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  gcc:
+    build:
+      context: .
+      dockerfile: MakeVLC.Dockerfile
+    volumes:
+      - ./testdata/c-files:/testdata/
+      - ./testdata/fake_libc_include:/fakelibs/
+    command: tail -F /dev/null

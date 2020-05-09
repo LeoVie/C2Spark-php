@@ -1,0 +1,4 @@
+gui/qt/libqt_plugin_la-resources.lo: gui/qt/resources.cpp \
+ /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:
