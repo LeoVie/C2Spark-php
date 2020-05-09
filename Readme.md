@@ -2,6 +2,14 @@
 C to Spark transpiler.
 ## To do
 - if
-- switch
-- **function vs. procedure**
-- VLC-Player
+- variables are undefined -> testdata/c-files/do-wohile-loop.c
+
+## Requirements
+- GNAT (https://www.adacore.com/download/)
+- Docker
+- PHP >= 7.4
+
+## Run
+```bash
+php c-to-ada.php [path_to_c_file] [output_directory]
+```
