@@ -9,13 +9,6 @@ class FuncDefTranspiler extends Transpiler
     /** @var array<string, string> **/
     public array $returnType;
 
-    private string $functionHead;
-
-    public function getFunctionHead(): string
-    {
-        return $this->functionHead;
-    }
-
     public function transpileFuncDecl(array $data): void
     {
         $this->transpile($data['args'], $data['_nodetype']);
@@ -27,29 +20,17 @@ class FuncDefTranspiler extends Transpiler
         $this->transpile($data['body'], $data['_nodetype']);
         $this->transpile($data['decl'], $data['_nodetype']);
 
-        $this->functionHead = $this->transpileFunctionHead();
-        $code = $this->functionHead;
+        $code = $this->determineSubprogramKeyword();
+        $code .= " $this->functionName (";
+        $code = $this->concatInParameters($code);
+        $code .= ")\n";
+        $code = $this->appendReturnIfExists($code);
         $code .= "is\n";
         $code .= "begin\n";
         $code = $this->appendCompounds($code);
         $code .= 'end ' . $this->functionName . ';';
 
         return ['value' => $code];
-    }
-
-    public function transpileFunctionHead(): string
-    {
-        $code = $this->determineSubprogramKeyword();
-        $code .= " $this->functionName";
-        if (!empty($this->inParameters)) {
-            $code .= " (";
-            $code = $this->concatInParameters($code);
-            $code .= ")";
-        }
-        $code .= "\n";
-        $code = $this->appendReturnIfExists($code);
-
-        return $code;
     }
 
     private function determineSubprogramKeyword(): string
