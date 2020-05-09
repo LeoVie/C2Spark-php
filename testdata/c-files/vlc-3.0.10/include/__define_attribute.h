@@ -1,1 +1,0 @@
-#define __attribute__((visibility("default")))
