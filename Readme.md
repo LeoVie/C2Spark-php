@@ -13,3 +13,8 @@ C to Spark transpiler.
 ```bash
 php c-to-ada.php [path_to_c_file] [output_directory]
 ```
+
+
+
+
+variables are added to every function -> clear it after each function

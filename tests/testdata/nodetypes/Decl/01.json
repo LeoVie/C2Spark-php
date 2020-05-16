@@ -1,0 +1,40 @@
+{
+  "_nodetype": "Decl",
+  "name": "result",
+  "quals": [],
+  "storage": [],
+  "funcspec": [],
+  "type": {
+    "_nodetype": "TypeDecl",
+    "declname": "result",
+    "quals": [],
+    "type": {
+      "_nodetype": "IdentifierType",
+      "names": [
+        "int"
+      ]
+    }
+  },
+  "init": {
+    "_nodetype": "BinaryOp",
+    "op": "*",
+    "left": {
+      "_nodetype": "BinaryOp",
+      "op": "\/",
+      "left": {
+        "_nodetype": "ID",
+        "name": "x"
+      },
+      "right": {
+        "_nodetype": "Constant",
+        "type": "int",
+        "value": "42"
+      }
+    },
+    "right": {
+      "_nodetype": "ID",
+      "name": "y"
+    }
+  },
+  "bitsize": null
+}

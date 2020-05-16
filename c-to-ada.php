@@ -30,7 +30,6 @@ $transpiler->transpile(Safe\json_decode($json, true), '');
 $gpr = "project Transpile is\n    for Source_Dirs use (\"src\");\n    for Object_Dir use \"obj\";\nend Transpile;\n";
 $adb = $transpiler->getAdbContent();
 $ads = $transpiler->getAdsContent();
-var_dump($transpiler->variables);
 
 if (!is_dir($outputDirectory)) {
     mkdir($outputDirectory);
@@ -46,7 +45,7 @@ Safe\file_put_contents($outputDirectory . '/src/transpiled.ads', $ads);
 $sep = DIRECTORY_SEPARATOR;
 
 $gnatProve = GNATProve::create(realpath($outputDirectory) . $sep . 'transpile.gpr');
-$gnatProve->level(1)
+$gnatProve->level(4)
     ->dontStopAtFirstError()
     ->analyzeSingleFile('transpiled.adb');
 

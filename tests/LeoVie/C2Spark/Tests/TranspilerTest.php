@@ -133,7 +133,7 @@ class TranspilerTest extends TestCase
             [
                 'fixturePath' => 'nodetypes/TypeDecl/FromDeclContext/02.json',
                 'parentNodeType' => 'Decl',
-                'expected' => ['value' => ['value' => 'C.unsigned']],
+                'expected' => ['value' => ['value' => 'Interfaces.C.unsigned']],
             ],
         ];
     }
@@ -151,7 +151,7 @@ class TranspilerTest extends TestCase
     {
         $data = $this->loadFixture($fixturePath);
 
-        $this->transpiler = new FuncDefTranspiler();
+        $this->transpiler = new FuncDefTranspiler([]);
         $this->transpiler->transpileFuncDecl($data);
 
         self::assertEquals($expectedInParameters, $this->transpiler->inParameters);
@@ -198,7 +198,7 @@ class TranspilerTest extends TestCase
         return [
             [
                 'nodetypes/FuncDef/01.json',
-                ['value' => "function foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend foo;"],
+                ['value' => "function foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nresult: Integer;\nbegin\n    result := ((x / 42) * y);\n    return result;\nend foo;"],
             ],
             [
                 'nodetypes/FuncDef/02.json',
@@ -259,7 +259,7 @@ class TranspilerTest extends TestCase
             ],
             [
                 'nodetypes/IdentifierType/02.json',
-                ['value' => 'C.unsigned'],
+                ['value' => 'Interfaces.C.unsigned'],
             ],
         ];
     }
@@ -300,16 +300,14 @@ class TranspilerTest extends TestCase
             [
                 'nodetypes/FileAST/01.json',
                 ['value' =>
-                    "function foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend foo;\n\n"
-                    . "end Transpiled;",
+                    "function foo (x : in Integer; y : in Integer)\nreturn Integer\nis\nresult: Integer;\nbegin\n    result := ((x / 42) * y);\n    return result;\nend foo;\n\n"
                 ],
             ],
             [
                 'nodetypes/FileAST/02.json',
                 ['value' =>
-                    "function first (x : in Integer; y : in Integer)\nreturn Integer\nis\nbegin\n    result := ((x / 42) * y);\n    return result;\nend first;\n\n"
+                    "function first (x : in Integer; y : in Integer)\nreturn Integer\nis\nresult: Integer;\nbegin\n    result := ((x / 42) * y);\n    return result;\nend first;\n\n"
                     . "procedure second (number : in Integer)\nis\nbegin\n    printf(\"%d\", number);\nend second;\n\n"
-                    . "end Transpiled;",
                 ],
             ],
         ];
@@ -353,6 +351,18 @@ class TranspilerTest extends TestCase
                 ['value' => "if (number <= 50) then\n"],
             ],*/
         ];
+    }
+
+    public function testTranspileDecl(): void
+    {
+        $data = $this->loadFixture('nodetypes/Decl/01.json');
+
+        $expected = ['value' => 'result := ((x / 42) * y)'];
+        $actual = $this->transpiler->transpileDecl($data, 'Compound');
+
+        self::assertEquals($expected, $actual);
+        self::assertEquals([['name' => 'result', 'type' => ['value' => ['value' => 'Integer']]]],
+            $this->transpiler->variables);
     }
 
     private function loadFixture(string $path): array

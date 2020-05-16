@@ -11,6 +11,16 @@ class FuncDefTranspiler extends Transpiler
 
     private string $functionHead;
 
+    public function __construct(array $variables)
+    {
+        $this->variables = $variables;
+    }
+
+    public function getVariables(): array
+    {
+        return $this->variables;
+    }
+
     public function getFunctionHead(): string
     {
         return $this->functionHead;
@@ -30,6 +40,11 @@ class FuncDefTranspiler extends Transpiler
         $this->functionHead = $this->transpileFunctionHead();
         $code = $this->functionHead;
         $code .= "is\n";
+
+        foreach ($this->variables as $variable) {
+            $code .= $variable['name'] . ': ' . $variable['type']['value']['value'] . ";\n";
+        }
+
         $code .= "begin\n";
         $code = $this->appendCompounds($code);
         $code .= 'end ' . $this->functionName . ';';

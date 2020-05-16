@@ -18,7 +18,7 @@ class Transpiler
         '_' => 'Long_Long_Float',
         'unsigned char' => 'Unbounded_String',
         'void' => 'void',
-        'unsigned int' => 'C.unsigned',
+        'unsigned int' => 'Interfaces.C.unsigned',
         'string' => 'String',
     ];
 
@@ -183,14 +183,15 @@ class Transpiler
 
     public function transpileFuncDecl(array $data): void
     {
-        (new FuncDefTranspiler())->transpile($data, $data['_nodetype']);
+        (new FuncDefTranspiler($this->variables))->transpile($data, $data['_nodetype']);
     }
 
     public function transpileFuncDef(array $data): array
     {
-        $funcDefTranspiler = new FuncDefTranspiler();
+        $funcDefTranspiler = new FuncDefTranspiler([]);
         $transpiled = $funcDefTranspiler->transpile($data, $data['_nodetype']);
         $this->functionHeads[] = $funcDefTranspiler->getFunctionHead();
+        $this->variables = $funcDefTranspiler->getVariables();
 
         return $transpiled;
     }
@@ -283,7 +284,6 @@ class Transpiler
     public function transpileDecl(array $data, string $parentNodeType): array
     {
         if ($parentNodeType === 'Compound') {
-            \Safe\file_put_contents(__DIR__ . '/data.json', \Safe\json_encode($data));
             $name = $data['name'];
             $type = $this->transpile($data['type'], $data['_nodetype']);
             $this->variables[] = [
@@ -339,7 +339,10 @@ class Transpiler
 
     public function getAdsContent(): string
     {
-        $code = "package Transpiled with SPARK_Mode => On is\n";
+        $code = 'with Interfaces.C; ';
+        $code .= 'use type Interfaces.C.Unsigned; ';
+        $code .= "\n\n";
+        $code .= "package Transpiled with SPARK_Mode => On is\n";
         foreach ($this->functionHeads as $functionHead) {
             $code .= "$functionHead;\n";
         }
