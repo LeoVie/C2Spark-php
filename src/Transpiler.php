@@ -166,8 +166,9 @@ class Transpiler
     public function transpileTypeDecl(array $data, string $parentNodeType): array
     {
         if ($parentNodeType === 'Decl') {
+            $value = $this->transpile($data['type'], $data['_nodetype']);
             return [
-                'value' => $this->transpile($data['type'], $data['_nodetype']),
+                'value' => $value,
             ];
         } else if ($parentNodeType == 'FuncDecl') {
             $varType = $this->transpile($data['type'], $data['_nodetype']);
@@ -282,7 +283,13 @@ class Transpiler
     public function transpileDecl(array $data, string $parentNodeType): array
     {
         if ($parentNodeType === 'Compound') {
+            \Safe\file_put_contents(__DIR__ . '/data.json', \Safe\json_encode($data));
             $name = $data['name'];
+            $type = $this->transpile($data['type'], $data['_nodetype']);
+            $this->variables[] = [
+                'name' => $name,
+                'type' => $type
+            ];
             $init = $this->transpile($data['init'], $data['_nodetype']);
             if (empty($init)) {
                 return ['value' => $name];
