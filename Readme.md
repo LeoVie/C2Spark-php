@@ -33,3 +33,5 @@ php c-to-ada.php ./examples/subprogram-with-no-effect-and-invalid-division.c ./t
 ```bash
 composer run test
 ```
+
+![PHP Composer](https://github.com/LeoVie/C2Spark-php/workflows/PHP%20Composer/badge.svg)
