@@ -34,4 +34,4 @@ php c-to-ada.php ./examples/subprogram-with-no-effect-and-invalid-division.c ./t
 composer run test
 ```
 
-![PHP Composer](https://github.com/LeoVie/C2Spark-php/workflows/PHP%20Composer/badge.svg)
+![PHP Composer](https://github.com/LeoVie/C2Spark-php/workflows/Static%20analysis,%20unit%20tests,%20mutation%20tests/badge.svg)
