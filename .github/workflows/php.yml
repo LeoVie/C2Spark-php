@@ -18,23 +18,15 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-
-  unit-tests:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: unit tests
+        
+      - name: Unit tests
         uses: php-actions/phpunit@v1
         with:
           config: build/config/phpunit.xml
           memory: 256M
-
-  static-analysis:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Run static analysis
+          
+      - name: Static analysis
         run: composer run-script phpstan
-
-      - name: Run mutation testing
+        
+      - name: Mutation tests
         run: composer run-script infection-ci
