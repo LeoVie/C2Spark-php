@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Static analysis, unit tests, mutation tests
 
 on:
   push:
@@ -18,12 +18,12 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-        
-      - name: Unit tests
-        run: composer run phpunit
-          
+
       - name: Static analysis
         run: composer run-script phpstan
+
+      - name: Unit tests
+        run: composer run phpunit
         
       - name: Mutation tests
         run: composer run-script infection-ci
