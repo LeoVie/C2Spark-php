@@ -27,6 +27,7 @@ jobs:
         with:
           config: build/config/phpunit.xml
           memory: 256M
+        run: composer run phpunit
 
   static-analysis:
     steps:
