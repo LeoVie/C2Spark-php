@@ -20,6 +20,8 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
 
   unit-tests:
+    runs-on: ubuntu-latest
+
     steps:
       - name: unit tests
         uses: php-actions/phpunit@v1
