@@ -21,12 +21,12 @@ jobs:
 
   unit-tests:
     steps:
-      uses: php-actions/phpunit@v1
+      - uses: php-actions/phpunit@v1
 
-    - name: unit tests
-      with:
-        config: build/config/phpunit.xml
-        memory: 256M
+      - name: unit tests
+        with:
+          config: build/config/phpunit.xml
+          memory: 256M
 
   static-analysis:
     steps:
