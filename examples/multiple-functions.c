@@ -4,5 +4,5 @@ int first(int x, int y) {
 }
 
 void second(int number) {
-    printf("%d", number);
+    int result = first(number, 10);
 }
