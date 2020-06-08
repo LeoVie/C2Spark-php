@@ -20,10 +20,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
         
       - name: Unit tests
-        uses: php-actions/phpunit@v1
-        with:
-          config: build/config/phpunit.xml
-          memory: 256M
+        run: composer run phpunit
           
       - name: Static analysis
         run: composer run-script phpstan
