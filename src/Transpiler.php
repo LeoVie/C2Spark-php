@@ -22,8 +22,15 @@ class Transpiler
         'string' => 'String',
     ];
 
-    protected const OP_MAPPING = [
+    protected const UNARY_OP_MAPPING = [
         'p++' => '%s := %s + 1',
+        '-' => '-%s',
+    ];
+
+    protected const BINARY_OP_MAPPING = [
+        '==' => '=',
+        '||' => 'or',
+        '&&' => 'and',
     ];
 
     public array $inParameters = [];
@@ -126,10 +133,14 @@ class Transpiler
     {
         $left = $this->transpile($data['left'], $data['_nodetype']);
         $right = $this->transpile($data['right'], $data['_nodetype']);
+
         $op = $data['op'];
+        if (array_key_exists($op, self::BINARY_OP_MAPPING)) {
+            $op = self::BINARY_OP_MAPPING[$op];
+        }
 
         return [
-            'value' => '(' . $left['value'] . ' ' . $op . ' ' . $right['value'] . ')',
+            'value' => sprintf("(%s %s %s)", $left['value'], $op, $right['value']),
         ];
     }
 
@@ -264,13 +275,13 @@ class Transpiler
     public function transpileUnaryOp(array $data): array
     {
         $cOp = $data['op'];
-        if (!array_key_exists($cOp, self::OP_MAPPING)) {
+        if (!array_key_exists($cOp, self::UNARY_OP_MAPPING)) {
             throw new Exception('No transpiled op found for C op "' . $cOp . '".');
         }
 
         $expr = $this->transpile($data['expr'], $data['_nodetype'])['value'];
 
-        $opWithPlaceholders = self::OP_MAPPING[$cOp];
+        $opWithPlaceholders = self::UNARY_OP_MAPPING[$cOp];
         $op = sprintf($opWithPlaceholders, $expr, $expr);
 
         return [

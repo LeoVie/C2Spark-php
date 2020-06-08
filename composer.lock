@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LeoVie/gnat-wrapper.git",
-                "reference": "bd6774de43f7f34e3b119431a4f816ec210ff139"
+                "reference": "7fb4aabf0f16347b6b1cce4d06dde6e5c810ab9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LeoVie/gnat-wrapper/zipball/bd6774de43f7f34e3b119431a4f816ec210ff139",
-                "reference": "bd6774de43f7f34e3b119431a4f816ec210ff139",
+                "url": "https://api.github.com/repos/LeoVie/gnat-wrapper/zipball/7fb4aabf0f16347b6b1cce4d06dde6e5c810ab9c",
+                "reference": "7fb4aabf0f16347b6b1cce4d06dde6e5c810ab9c",
                 "shasum": ""
             },
             "require": {
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "A php wrapper for GNAT",
-            "time": "2020-05-09T21:34:35+00:00"
+            "time": "2020-05-16T13:26:30+00:00"
         },
         {
             "name": "thecodingmachine/safe",

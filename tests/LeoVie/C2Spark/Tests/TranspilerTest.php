@@ -264,14 +264,28 @@ class TranspilerTest extends TestCase
         ];
     }
 
-    public function testTranspileUnaryOp(): void
+    /** @dataProvider unaryOpProvider */
+    public function testTranspileUnaryOp(string $fixturePath, array $expected): void
     {
-        $data = $this->loadFixture('nodetypes/UnaryOp/++.json');
+        $data = $this->loadFixture($fixturePath);
 
-        $expected = ['value' => 'i := i + 1'];
         $actual = $this->transpiler->transpileUnaryOp($data);
 
         self::assertEquals($expected, $actual);
+    }
+
+    public function unaryOpProvider(): array
+    {
+        return [
+            [
+                'nodetypes/UnaryOp/++.json',
+                ['value' => 'i := i + 1']
+            ],
+            [
+                'nodetypes/UnaryOp/-.json',
+                ['value' => '-2147483648']
+            ],
+        ];
     }
 
     public function testTranspileFor(): void
@@ -346,10 +360,10 @@ class TranspilerTest extends TestCase
     public function ifProvider(): array
     {
         return [
-            /*[
+            [
                 'nodetypes/If/01.json',
-                ['value' => "if (number <= 50) then\n"],
-            ],*/
+                ['value' => "if (number <= 50) then return 50; else return 0; end if\n"],
+            ],
         ];
     }
 

@@ -1,7 +1,8 @@
 <?php
 
 use LeoVie\C2Spark\Transpiler;
-use LeoVie\GNATWrapper\GNATProve;
+use LeoVie\GNATWrapper\GNATProve\GNATProve;
+use LeoVie\GNATWrapper\GNATPP\GNATPP;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -15,6 +16,7 @@ if (!array_key_exists(2, $argv)) {
 }
 $outputDirectory = $argv[2];
 if (array_key_exists(3, $argv) && $argv[3] === '--build') {
+    print("Building docker image. May take a while...\n");
     shell_exec('docker build --tag c2spark:latest .');
 }
 
@@ -38,13 +40,19 @@ if (!is_dir($outputDirectory . '/src')) {
     mkdir($outputDirectory . '/src');
 }
 
-Safe\file_put_contents($outputDirectory . '/transpile.gpr', $gpr);
-Safe\file_put_contents($outputDirectory . '/src/transpiled.adb', $adb);
-Safe\file_put_contents($outputDirectory . '/src/transpiled.ads', $ads);
-
 $sep = DIRECTORY_SEPARATOR;
+$gprFile = realpath($outputDirectory) . $sep . 'transpile.gpr';
+$adbFile = realpath($outputDirectory) . '/src/transpiled.adb';
+$adsFile = realpath($outputDirectory) . '/src/transpiled.ads';
 
-$gnatProve = GNATProve::create(realpath($outputDirectory) . $sep . 'transpile.gpr');
+Safe\file_put_contents($gprFile, $gpr);
+Safe\file_put_contents($adbFile, $adb);
+Safe\file_put_contents($adsFile, $ads);
+
+GNATPP::create($adbFile)->execute();
+GNATPP::create($adsFile)->execute();
+
+$gnatProve = GNATProve::create($gprFile);
 $gnatProve->level(4)
     ->dontStopAtFirstError()
     ->analyzeSingleFile('transpiled.adb');

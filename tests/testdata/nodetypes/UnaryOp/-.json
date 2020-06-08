@@ -1,0 +1,9 @@
+{
+  "_nodetype": "UnaryOp",
+  "op": "-",
+  "expr": {
+    "_nodetype": "Constant",
+    "type": "int",
+    "value": "2147483648"
+  }
+}
