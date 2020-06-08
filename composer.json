@@ -37,7 +37,7 @@
             "phpstan analyse -c build/config/phpstan.neon"
         ],
         "phpunit": [
-            "phpunit -c build/config/phpunit.xml Tests"
+            "phpunit -c build/config/phpunit.xml"
         ],
         "infection": [
             "infection --only-covered --configuration=build/config/infection.json --min-msi=90 --min-covered-msi=90 --coverage=../../build/coverage --threads=4"
