@@ -52,7 +52,6 @@ class Transpiler
             case 'FileAST':
                 $this->fileCode = $this->transpileFileAST($data);
                 return $this->fileCode;
-                break;
             case 'Assignment':
                 return $this->transpileAssignment($data);
             case 'BinaryOp':
@@ -84,22 +83,16 @@ class Transpiler
                 break;
             case 'Return':
                 return $this->transpileReturn($data);
-                break;
             case 'TypeDecl':
                 return $this->transpileTypeDecl($data, $parentNodeType);
-                break;
             case 'While':
                 return $this->transpileWhile($data);
-                break;
             case 'UnaryOp':
                 return $this->transpileUnaryOp($data);
-                break;
             case 'DoWhile':
                 return $this->transpileDoWhile($data);
-                break;
             case 'If':
                 return $this->transpileIf($data);
-                break;
         }
 
         return [];
@@ -170,8 +163,6 @@ class Transpiler
     }
 
     /**
-     * @return array<string, string>
-     *
      * @throws Exception
      */
     public function transpileTypeDecl(array $data, string $parentNodeType): array
