@@ -28,6 +28,8 @@ jobs:
           memory: 256M
 
   static-analysis:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Run static analysis
         run: composer run-script phpstan
